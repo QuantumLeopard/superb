@@ -4,6 +4,7 @@
 using namespace std;
 
 int main () {
+	bool dbg = true;
 	int degree;
 	bool exit = false;
 	string userInput;
@@ -25,8 +26,9 @@ int main () {
 		if (degree) {
 			cout << "You entered " << degree << endl;
 			Graph permutationGraph;
-			permutationGraph.buildGraph(degree);
+			permutationGraph.buildGraph(dbg,degree);
 			permutationGraph.print();
 		}
+		if (dbg) { cout << "end loop\n"; }
 	}
 }

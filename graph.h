@@ -11,14 +11,19 @@
 using namespace std;
 class Graph {
 	public:
-		void buildGraph(int degree);
+		Graph();
+		~Graph();
+		void buildGraph(bool dbg, int degree);
 		void print();
 		void findSolutions();
+		void add(Permutation *);
+		void remove(Permutation *);
 	private:
 		const char charSet[10] = {'0','1','2','3','4','5','6','7','8','9'};
-		void buildNodesRecursively(int, int);
-		std::vector<Permutation *> nodes;
-		std::vector<Permutation *> solutions;
+		void buildNodesRecursively(bool, int, int);
+		Permutation * head;
+		Permutation * tail;
+		int size;
 };
 
 #endif
