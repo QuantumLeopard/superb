@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include "graph.h"
 #include "permutation.h"
 using namespace std;
@@ -25,10 +26,18 @@ int main () {
 		}
 		if (degree) {
 			cout << "You entered " << degree << endl;
+			clock_t start = clock();
 			Graph permutationGraph;
 			permutationGraph.buildGraph(dbg,degree);
-			permutationGraph.print();
+			clock_t finish = clock();
+			double buildSec = double(finish - start) / CLOCKS_PER_SEC;
+			cout << "Building took " << buildSec * 1000.0 << " ms\n";
+			cout << "Print permutations in graph? (y/n)\n";
+			string doPrint;
+			cin >> doPrint;
+			if(doPrint.compare("y") == 0) {
+				permutationGraph.print();
+			}
 		}
-		if (dbg) { cout << "end loop\n"; }
 	}
 }

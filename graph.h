@@ -21,9 +21,25 @@ class Graph {
 	private:
 		const char charSet[10] = {'0','1','2','3','4','5','6','7','8','9'};
 		void buildNodesRecursively(bool, int, int);
+		void generateGraphEdges(bool);
 		Permutation * head;
 		Permutation * tail;
 		int size;
+		int degree;
+		class Edge;
+		class Vertex {
+			Permutation * permutation;
+			void addNeighbor(Permutation *, int);
+			Edge * head;
+			Edge * tail;
+			int numNeighbors;
+			friend class Graph;
+		};
+		class Edge{
+			int distance;
+			Vertex * neighbor;
+			friend class Graph;
+		};
 };
 
 #endif

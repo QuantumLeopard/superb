@@ -21,11 +21,13 @@ class Permutation {
 		void setPrev(Permutation *);
 		int getSize();
 		string str();
+		int overlap(Permutation *);
 	private:
+		int size;
 		Permutation * next;
 		Permutation * prev;
 		char * charArray;
-		int size;
+		
 };
 
 #endif

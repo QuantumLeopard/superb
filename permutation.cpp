@@ -10,6 +10,10 @@ Permutation::Permutation(int size) {
 	this->prev= NULL;
 }
 
+Permutation::~Permutation() {
+		delete[] this->charArray;
+}
+
 Permutation::Permutation(Permutation * that) {
 	int size = that->getSize();
 	this->size = size;
@@ -57,6 +61,21 @@ string Permutation::str() {
 	return returnVal.str();
 }
 
-Permutation::~Permutation() {
-		delete[] this->charArray;
+int Permutation::overlap(Permutation * potentialNeighbor) {
+	//start with complete overlap and slide apart until they match
+	int offset = 0;
+	bool matchingOverlapFound = false;
+	while (!matchingOverlapFound && offset < size) {
+		bool noMismatch = true;
+		int pos = offset;
+		while (noMismatch && pos < size) {
+			if(this->getChar(pos) != potentialNeighbor->getChar(pos-offset)) {
+				noMismatch = false;
+			}
+			pos++;
+		}
+		offset++;
+	}
+	return size - offset;
 }
+

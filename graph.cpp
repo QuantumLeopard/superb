@@ -18,14 +18,15 @@ Graph::~Graph() {
 void Graph::buildGraph(bool dbg, int degree) {
 	cout << "Building a permutation graph of degree " << degree << endl;
 
+	this->degree = degree;
 	this->buildNodesRecursively(dbg,degree,degree);
+	//this->generateGraphEdges(dbg);
 
-	cout << "Building complete\n";
+	cout << "Building complete: " << size << " permutations\n";
 
 }
 
 void Graph::buildNodesRecursively(bool dbg, int degree, int amtToBuild) {
-	if(dbg) { cout << "  Starting " << amtToBuild << endl; }
 	//if the amount to build is 1 then we are at the base case
 	if (amtToBuild == 1 ) {
 		for (int i = 1; i<=degree; i++ ) {
@@ -36,24 +37,20 @@ void Graph::buildNodesRecursively(bool dbg, int degree, int amtToBuild) {
 	} else {
 		//This will pile up the characters without checking for dupes
 		this->buildNodesRecursively(dbg, degree, amtToBuild - 1);
-		if(dbg) { this->print(); }
 		//remove the dupes
 		Permutation* node = head;
 		std::vector<Permutation *> newNodes;
 		while(node != NULL) {
 			Permutation * next = node->getNext();
-			if (dbg) { cout << "Lets add a digit\n"; }
 			for(int i = 1; i <= degree; i++ ) {
 				bool isDupe = false;
 				for(int j = 0; j < degree; j++) {
 					if(node->getChar(j) == charSet[i]) {
-						cout << "Dupe: " << node->getChar(j) << " = " << charSet[i] << endl;
 						isDupe = true;
 						break;
 					}
 				}
 				if(!isDupe) {
-					cout << "lets copy " << node << endl;
 					Permutation * newNode = new Permutation(node);
 					newNode->setChar(amtToBuild-1, charSet[i]);
 					newNodes.push_back(newNode);
@@ -67,7 +64,22 @@ void Graph::buildNodesRecursively(bool dbg, int degree, int amtToBuild) {
 			this->add(*newNode);
 		}
 	}
-	cout << "  digit " << amtToBuild << " generated for each node\n";
+	cout << "Digit: " << amtToBuild << " added\n";
+}
+
+void Graph::generateGraphEdges(bool dbg) {
+	Permutation * workingNode = head;
+	while (workingNode != NULL) {
+		Permutation * potentialNeighbor = head;
+		while (potentialNeighbor != NULL ) {
+			if(potentialNeighbor == workingNode) { continue; }
+			int overlap = workingNode->overlap(potentialNeighbor);
+			int distance = degree - overlap;
+			//workingNode->addNeighbor(potentialNeighbor, distance);
+			potentialNeighbor = potentialNeighbor->getNext();
+		}
+		workingNode = workingNode->getNext();
+	}
 }
 
 void Graph::print () {
@@ -94,8 +106,6 @@ void Graph::add(Permutation * newNode) {
 }
 
 void Graph::remove(Permutation * oldNode) {
-	cout << "SIZE: " << this->size<< endl;
-	this->print();
 	if(this->size == 0) {
 		return;
 	} else {
@@ -110,7 +120,6 @@ void Graph::remove(Permutation * oldNode) {
 				if(next) {
 					next->setPrev(prev);
 				}
-				cout << "Found node to remove..." << node->str() << "\n";
 				if(head == node) {
 					head = next;
 				}
@@ -119,13 +128,11 @@ void Graph::remove(Permutation * oldNode) {
 				}
 				delete node;
 				this->size -= 1;
-				cout << "Deleted node\n";
 				node = NULL;
 			} else {
 				node = next;
 			}
 		}
 	}
-	cout << "SIZE: " << this->size<< endl;
-	this->print();
 }
+
