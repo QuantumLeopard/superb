@@ -15,19 +15,13 @@ class Permutation {
 		~Permutation();
 		char getChar(int);
 		void setChar(int, char);
-		Permutation * getNext();
-		Permutation * getPrev();
-		void setNext(Permutation *);
-		void setPrev(Permutation *);
+		bool addNeighbor(Permutation *, int);
 		int getSize();
 		string str();
 		int overlap(Permutation *);
 	private:
 		int size;
-		Permutation * next;
-		Permutation * prev;
 		char * charArray;
-		
 };
 
 #endif

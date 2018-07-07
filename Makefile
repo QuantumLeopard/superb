@@ -2,7 +2,7 @@ EXEC:=superb
 CXX:=g++
 LINKER:=g++
 INC:=-I.
-CXXFLAGS:=-Wall -Wextra -pedantic
+CXXFLAGS:= -std=c++11 -Wall -Wextra -pedantic
 
 SRC:=$(wildcard *.cpp)
 OBJ:=$(patsubst %.cpp,%.o,$(SRC))
@@ -13,9 +13,9 @@ $(EXEC): $(OBJ)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
-	$(CXX) $(INC) -MM $< > $*.d
 
 %.d: %.cpp
+	$(CXX) $(INC) -MM $< > $*.d
 
 -include $(DEP)
 

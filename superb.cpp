@@ -11,7 +11,7 @@ int main () {
 	string userInput;
 	cout << "This is Superb. Let's discover a superpermutation.\n";
 	while(!exit){
-		cout << "Please enter the number of characters (or q to quit):\n";
+		cout << "Please enter the number of symbols (or q to quit):\n";
 		cin >> userInput;
 		try {
 			degree = stoi(userInput);

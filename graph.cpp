@@ -1,5 +1,6 @@
 #include "graph.h"
 
+using namespace std;
 Graph::Graph() {
 	size = 0;
 	head = NULL;
@@ -7,9 +8,9 @@ Graph::Graph() {
 }
 
 Graph::~Graph() {
-	Permutation * node = head; 
+	Node * node = head; 
 	while(node != NULL) {
-		Permutation * next = node->getNext();  
+		Node * next = node->getNext();  
 		delete node;
 		node = next;
 	}
@@ -37,30 +38,32 @@ void Graph::buildNodesRecursively(bool dbg, int degree, int amtToBuild) {
 	} else {
 		//This will pile up the characters without checking for dupes
 		this->buildNodesRecursively(dbg, degree, amtToBuild - 1);
-		//remove the dupes
-		Permutation* node = head;
-		std::vector<Permutation *> newNodes;
+		//Two handles, one for base class and one for derived, to minimize casting.
+		Node * node = head;
+		std::vector<Permutation *> newPerms;
+		//create a vector with nodes with a new digit, that doesn't duplicate a digit
+		//in the node
 		while(node != NULL) {
-			Permutation * next = node->getNext();
+			Node * next = node->getNext();
 			for(int i = 1; i <= degree; i++ ) {
 				bool isDupe = false;
 				for(int j = 0; j < degree; j++) {
-					if(node->getChar(j) == charSet[i]) {
+					if(node->getDatum()->getChar(j) == charSet[i]) {
 						isDupe = true;
 						break;
 					}
 				}
 				if(!isDupe) {
-					Permutation * newNode = new Permutation(node);
-					newNode->setChar(amtToBuild-1, charSet[i]);
-					newNodes.push_back(newNode);
+					Permutation * newPerm = new Permutation(node->getDatum());
+					newPerm->setChar(amtToBuild-1, charSet[i]);
+					newPerms.push_back(newPerm);
 				}
 			}
 			//The above loop adds all the children, this is now a dupe
 			this->remove(node);
 			node = next;
 		}
-		for(std::vector<Permutation *>::iterator newNode = newNodes.begin(); newNode!=newNodes.end(); newNode++) {
+		for(std::vector<Permutation *>::iterator newNode = newPerms.begin(); newNode!=newPerms.end(); newNode++) {
 			this->add(*newNode);
 		}
 	}
@@ -68,71 +71,30 @@ void Graph::buildNodesRecursively(bool dbg, int degree, int amtToBuild) {
 }
 
 void Graph::generateGraphEdges(bool dbg) {
-	Permutation * workingNode = head;
-	while (workingNode != NULL) {
-		Permutation * potentialNeighbor = head;
-		while (potentialNeighbor != NULL ) {
-			if(potentialNeighbor == workingNode) { continue; }
-			int overlap = workingNode->overlap(potentialNeighbor);
-			int distance = degree - overlap;
-			//workingNode->addNeighbor(potentialNeighbor, distance);
-			potentialNeighbor = potentialNeighbor->getNext();
-		}
-		workingNode = workingNode->getNext();
-	}
+	//Permutation * workingNode = head;
+	//while (workingNode != NULL) {
+	//	Permutation * potentialNeighbor = head;
+	//	while (potentialNeighbor != NULL ) {
+	//		if(potentialNeighbor == workingNode) { continue; }
+	//		int overlap = workingNode->overlap(potentialNeighbor);
+	//		int distance = degree - overlap;
+	//		cout << workingNode->str() << " : " << potentialNeighbor->str() << " overlap: " << overlap << endl;
+	//	//They're all neighbors, even if you don't overlap them
+	//		workingNode->addNeighbor(potentialNeighbor, distance);
+	//		potentialNeighbor = potentialNeighbor->getNext();
+	//	}
+	//	workingNode = workingNode->getNext();
+	//}
 }
 
 void Graph::print () {
 	cout << "Graph size: " << size << "\n";
-	for (Permutation * node = this->head; node != NULL; node=node->getNext()) {
+	for (Node * node = this->head; node != NULL; node=node->getNext()) {
 		//cout << "NODE: " << node << endl;
-		cout << node->str() << endl ;
+		cout << node->getDatum()->str() << endl ;
 		//cout << "  next: " << node->getNext() << endl;
 		//cout << "  prev: " << node->getPrev() << endl;
 	}
 	cout << "End of "<< size << " nodes.\n";
-}
-
-void Graph::add(Permutation * newNode) {
-	if(size == 0) {
-		head = newNode;
-		tail = newNode;
-	} else {
-		tail->setNext(newNode);
-		newNode->setPrev(tail);
-		tail = newNode;
-	}
-	size++;
-}
-
-void Graph::remove(Permutation * oldNode) {
-	if(this->size == 0) {
-		return;
-	} else {
-		Permutation * node = head;
-		while(node != NULL) {
-			Permutation * next = node->getNext();
-			Permutation * prev = node->getPrev();
-			if(node == oldNode) {
-				if(prev) {
-					prev->setNext(next);
-				}
-				if(next) {
-					next->setPrev(prev);
-				}
-				if(head == node) {
-					head = next;
-				}
-				if(tail == node) {
-					tail = prev;
-				}
-				delete node;
-				this->size -= 1;
-				node = NULL;
-			} else {
-				node = next;
-			}
-		}
-	}
 }
 

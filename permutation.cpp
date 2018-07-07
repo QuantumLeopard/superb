@@ -1,4 +1,5 @@
 #include "permutation.h"
+using namespace std;
 
 Permutation::Permutation(int size) {
 	this->size = size;
@@ -6,8 +7,6 @@ Permutation::Permutation(int size) {
 	for( int i = 0; i < size; i++ ) {
 		this->charArray[i] = '0';
 	}
-	this->next = NULL;
-	this->prev= NULL;
 }
 
 Permutation::~Permutation() {
@@ -21,8 +20,6 @@ Permutation::Permutation(Permutation * that) {
 	for( int i = 0; i < size; i++ ) {
 		this->charArray[i] = that->charArray[i];
 	}
-	this->next = NULL;
-	this->prev = NULL;
 }
 
 char Permutation::getChar(int i) {
@@ -31,22 +28,6 @@ char Permutation::getChar(int i) {
 
 void Permutation::setChar(int i, char val) {
 	this->charArray[i] = val;
-}
-
-Permutation * Permutation::getNext() {
-	return this->next;
-}
-
-void Permutation::setNext(Permutation * nextPtr) {
-	this->next = nextPtr;
-}
-
-Permutation * Permutation::getPrev() {
-	return this->prev;
-}
-
-void Permutation::setPrev(Permutation * prevPtr) {
-	this->prev = prevPtr;
 }
 
 int Permutation::getSize() {
@@ -74,8 +55,15 @@ int Permutation::overlap(Permutation * potentialNeighbor) {
 			}
 			pos++;
 		}
-		offset++;
+		if (noMismatch) {
+			matchingOverlapFound = true;
+		} else {
+			offset++;
+		}
 	}
 	return size - offset;
 }
 
+bool addNeighbor(Permutation * newNeighbor, int distance) {
+	return true;
+}
