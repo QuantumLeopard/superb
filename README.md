@@ -31,7 +31,7 @@ The contruction of superpermutations is easily described as a [traveling salesma
  `````
 This is a computationally expensive problem to solve for the shortest path that visits all vertices (by brute force).  Many algorithms do not attempt to find the shorest path, but rather offer a ceiling or average distance that is acceptable for an application, while providing a solution in a reasonable amount of time.
        
-<h3>Features</h3>
+<h3>Planned Work</h3>
 
 - [x] Recursive Node Generation
 
@@ -43,7 +43,9 @@ This is a computationally expensive problem to solve for the shortest path that 
 
 - [ ] [Chirstofides Solution](https://en.wikipedia.org/wiki/Christofides_algorithm/)
 
-- [ ] GUI
+- [ ] Python/Tkinter gui
+
+- [ ] Julia Benchmark
 
 
 <h2>Results</h2>
@@ -54,15 +56,15 @@ The current test machine is running an AMD Ryzen 3 1200 on a B350 motherboard, w
 
 <h3>Recursive Node Generation Time</h3>
 
-| n  |  ms  |
-|----|------|
-|1   |.012  |
-|2   |.027  |
-|3   |.037  |
-|4   |.072  |
-|5   |.219  |
-|6   |1.116 |
-|7   |6.29  |
-|8   |34.028|
-|9   |285.798|
-|10  |3244.45|
+| n  |  ms  | ms (dl refactor) |
+|----|------|------------------|
+|1   |.012  | .018             |
+|2   |.027  | .022             |
+|3   |.037  | .041             |
+|4   |.072  | .076             |
+|5   |.219  | .244             |
+|6   |1.116 | 1.297            |
+|7   |6.29  | 9.417            |
+|8   |34.028| 40.64            |
+|9   |285.798| 371.041         |
+|10  |3244.45| 4034.51         |
